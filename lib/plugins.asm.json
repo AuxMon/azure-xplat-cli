@@ -9843,6 +9843,15 @@
                       "short": "-p",
                       "long": "--application-type-build-path",
                       "description": "the path of the application type build"
+                    },
+                    {
+                      "flags": "-t --timeout <timeout>",
+                      "required": -14,
+                      "optional": 0,
+                      "bool": true,
+                      "short": "-t",
+                      "long": "--timeout",
+                      "description": "the timeout, seconds"
                     }
                   ]
                 },
@@ -17239,7 +17248,7 @@
             },
             {
               "name": "upload",
-              "description": "Upload the specified file to storage blob",
+              "description": "Upload the specified file to storage blob. To upload to large block blob, please run on 64-bit machine with 64-bit node.",
               "fullName": "storage blob upload",
               "usage": "[options] [file] [container] [blob]",
               "filePath": "commands/storage/storage.blob._js",
@@ -19730,6 +19739,14 @@
                   "short": "-p",
                   "long": "--path",
                   "description": "the path to be listed"
+                },
+                {
+                  "flags": "--prefix <prefix>",
+                  "required": -10,
+                  "optional": 0,
+                  "bool": true,
+                  "long": "--prefix",
+                  "description": "the storage file name prefix"
                 },
                 {
                   "flags": "--sas <sas>",
@@ -38130,7 +38147,7 @@
               "optional": 0,
               "bool": true,
               "long": "--aspNetCore",
-              "description": "Create a deployment script for ASP.NET Core web application, specify the project.json file path"
+              "description": "Create a deployment script for ASP.NET Core web application, specify the project file path"
             },
             {
               "flags": "--aspWebSite",
@@ -38155,6 +38172,14 @@
               "bool": true,
               "long": "--node",
               "description": "Create a deployment script for node.js website"
+            },
+            {
+              "flags": "--ruby",
+              "required": 0,
+              "optional": 0,
+              "bool": true,
+              "long": "--ruby",
+              "description": "Create a deployment script for ruby website"
             },
             {
               "flags": "--php",
@@ -43673,11 +43698,10 @@
                   "description": "Bootstrap options in JSON format. Ex: -j '{\"chef_node_name\":\"test_node\"}'"
                 },
                 {
-                  "flags": "-v, --bootstrap-version <number>",
-                  "required": -25,
+                  "flags": "--bootstrap-version <number>",
+                  "required": -21,
                   "optional": 0,
                   "bool": true,
-                  "short": "-v",
                   "long": "--bootstrap-version",
                   "description": "chef-client version to be installed"
                 },
@@ -43718,12 +43742,44 @@
                   "description": "the subscription id"
                 },
                 {
+                  "flags": "--chef-service-interval <chef-service-interval>",
+                  "required": -25,
+                  "optional": 0,
+                  "bool": true,
+                  "long": "--chef-service-interval",
+                  "description": "It specifies the frequency (in minutes) at which the chef-service runs. Pass 0 if you don't want the chef-service to be installed on the target machine."
+                },
+                {
                   "flags": "--json-attributes <json-attributes>",
                   "required": -19,
                   "optional": 0,
                   "bool": true,
                   "long": "--json-attributes",
                   "description": "A JSON string to be added to the first run of chef-client. Ex: --json-attributes '{\"foo\" : \"bar\"}'"
+                },
+                {
+                  "flags": "--daemon <daemon>",
+                  "required": -10,
+                  "optional": 0,
+                  "bool": true,
+                  "long": "--daemon",
+                  "description": "Configures the chef-client service for unattended execution. The node platform to be Windows. Options: 'none' or 'service' or 'task'. \n 'none' - Currently prevents the chef-client service from being configured as a service. \n 'service' - Configures the chef-client to run automatically in the background as a service. \n 'task' - Configures the chef-client to run automatically in the background as a scheduled task."
+                },
+                {
+                  "flags": "--secret <secret-key>",
+                  "required": -10,
+                  "optional": 0,
+                  "bool": true,
+                  "long": "--secret",
+                  "description": "The secret key to use to encrypt data bag item values."
+                },
+                {
+                  "flags": "--secret-file <secret-file>",
+                  "required": -15,
+                  "optional": 0,
+                  "bool": true,
+                  "long": "--secret-file",
+                  "description": "A file containing the secret key to use to encrypt data bag item values."
                 }
               ]
             },

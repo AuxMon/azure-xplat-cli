@@ -44,7 +44,7 @@ Please take a look at the list of supported environment variables over [here](ht
 ### Installation from a particular branch of this repository
 - Uninstall the previously installed CLI
    - If you installed via MSI, then uninstall the windows MSI. For mac installer `sudo azure-uninstall -g`
-   - If you installed via npm then execute: `npm uninstall azure-cli –g`
+   - If you installed via npm then execute: `npm uninstall -g azure-cli`
 - Clear the global cache: `npm cache clear –g`
 - Delete the .streamline folder from the User’s home profile `C:\Users\<username>\.streamline` | `~/.streamline`, if present.
 - Download the tarball from this link: `https://github.com/Azure/azure-xplat-cli/archive/<branch-name>.tar.gz`
@@ -97,6 +97,12 @@ azure --completion >> ~/azure.completion.sh
 echo 'source ~/azure.completion.sh' >> ~/.bash_profile
 # For Linux Terminal(non-login shell)
 echo 'source ~/azure.completion.sh' >> ~/.bashrc
+```
+
+To enable it in fish, run:
+
+```bash
+echo 'azure --completion-fish | source' >> ~/.config/fish/config.fish
 ```
 
 ## Get Started

@@ -1,3 +1,122 @@
+##2017-02-08 Version 0.10.9
+* General
+  * Improved error message in the CLI about command not being valid (Fixes #3272, #3256, #3245). #3424
+  * Improved azure portal command to infer the environment if not passed in (Fixes #2074). #3426
+  * Made the application not prompt for telemetry if AZURE_NON_INTERACTIVE_MODE environment variable is set (Fixes #3297). #3432
+  * Client side telemetry: Added error classification (Fixes #2779). #3434
+  * Changed setup authoring of windows installer to install 32 or 64 bit Node based on target cpu architecture (Fixes #3451). #3454
+* Datalake
+  * Add support to create Clusters with ADLS as default Storage. #3431
+* ServiceFabric
+  * Add timeout to application type register command. #3427
+* Compute
+  * Added new commands to support managed disks. #3458
+  * Fixed the scenario of enabling disk encryption from the CLI when using a certificate instead of a password. #3433
+  * Chef Extension
+    * Added new options in azure vm extension set-chef command for both ASM and ARM mode. #3400
+      *  --daemon - Configures the chef-client service for unattended execution. The node platform to be Windows. Options: \'none\' or \'service\'. \n \'none\' - Currently prevents the chef-client service from being configured as a service. \n \'service\' - Configures the chef-client to run automatically in the background as a service.
+      * --chef-service-interval - It specifies the frequency (in minutes) at which the chef-service runs. Pass 0 if you don\'t want the chef-service to be installed on the target machine.
+      * --secret - The secret key to use to encrypt data bag item values.
+      * --secret-file  - A file containing the secret key to use to encrypt data bag item values.
+      * --bootstrap-version - chef-client version to be installed.
+* CDN
+  * Added support for usage and edgenode commands. #3402
+* Network
+  * Improved arm DNS services. #3419
+    * Added option --quiet in the ```dns record-set add-record``` command to make CNAME records corrections available for scripting
+    * Added a chance in the ```dns record-set list``` command to filter record sets by type without setting option name
+    * Fixed ```dns records-set delete-record``` ```--type``` option description
+    * Fixed ```dns record-set``` commands case-sensitive ```--type``` option issue
+    * Corrected record-set show command displaying format
+    * Added ```--keep-empty-record-set``` option to remove record saving empty record set.
+    * Added default functionality to remove record set is last record was deleted
+  * Fixed issues in arm vpn connections (Fixes #3409, #3411, #3413). #3441
+    * Fixed ```vpn-connection set``` command issues
+    * Added VPN gateway BGP settings options
+    * Added ```--enable-bgp``` option in VPN connection
+  * Fixed issues in vnet and nsg. #3450
+    * Stripped unreachable NSG code
+    * Updated vnet create/set: if vnet was created from portal w/o dns servers it was impossible to add them using `vnet set` command. Also, `vnet create` works more similar to creating vnet from Azure portal
+  * Fixed issue with TXT records import even if values contain record types (MX, TXT, etc). #3452
+  * Fixed TXT records output format. #3459
+* Redis Cache
+  * Added import, export and Reset commands for Azure Redis Cache. #3423
+* WebApp
+  * Fixed hostnames list "undefined" error (Fixes #3435). #3436
+
+##2016-12-14 Version 0.10.8
+* General
+  * Skipped output of progress spinners when running with AZURE_NON_INTERACTIVE_MODE set, mostly resolves #3292. #3296
+  * Updated uuid to version 3.0.0. #3383
+* Network
+  * Fixed ARM network commands descriptions. #3275
+  * Corrected inconsistent option naming in app gateways backend-health command. #3308
+  * Fixed issues in PTR record set records import.  #3298
+  * Fixed issue with record-set add-record command adding PTR type record.  #3298
+  * Fixed issue #3282 with record-set delete commands: type option is not case sensitive anymore.  #3298
+  * Fixed nsg rule create command descriptions. #3291
+  * Fixed issue #3339. #3345
+  * Added an ability to change default names for app gateway http-settings, http listener, frontend port, frontend ip, gateway IP config. #3345
+  * Fixed extra-logger and mistypes in commands. #3345
+  * Removed ssl cert param from app gw show command when listener protocol is http (fixes #3354). #3365
+  * Reworked url path map listing. #3366
+  * Fixed issue in app gateway show command (Fixes #3347). #3348
+  * Reworked app gateways rule list command (fixes #3353). #3368
+  * Fixed DNS zone import issue with semicolon symbol (fixes #2869). #3376
+  * Reworked local gateways (fixes #3351). #3367
+* Compute
+  * Fixed typographical error in user message for get VM images. #3311
+  * Added --force-update-tag support to VM Extension & update test #3314
+  * Added Linux support to showAzureDiskEncryptionStatus. #3324 
+  * Fixed issue #3283 and added an ability to associate app gw probe and http settings #3315
+  * Added VM Secrets Support. #3338
+  * Fixed get-serial-console (fixes #3266). #3343
+* ServiceFabric
+  * Provided support for app package copy to use persist connection. #3326
+  * Fixed update service command, instanceCount would not be udpated. #3372
+* Storage
+  * Fixed the issue that the `azure storage container set` will erase the existing policies #3319
+  * Fixed the issue that `azure storage file download` won't return to command prompt after download success #3319
+* ResourceManager
+  * Fixed typo in an user facing message in group.deployment._js. #3336
+  * Added manual polling to provide current state of deployment to the customer. #3360
+  * Fixed resource create and set commands to take in the passed in properties. #3342
+  * Changed parsing function from jsonlint.parse to JSON.parse. #3375
+* ServerSideTelemetry #3350
+  * Added OS info and command info to user agent string.
+  * Refactored code around telemetry.
+  * Added tests for the new scenarios.
+* CDN
+  * Added geo filter after CDN RP version change. #3300
+* Datalake #3362
+  * Added new commands for trusted id providers, firewall rules, and waiting for job completion
+  * Refactored return objects based on GA SDK
+  * Updated tests and add new tests
+  * Re-enabled the ability to delete full ACLs
+  * Removed unsupported/unused logic
+* WebApp
+  * Fixed cli.interaction in webapp config set (fixes #3302). #3364
+
+##2016-11-2 Version 0.10.7
+* IotHub #3265
+  * Added support for the following IP filter-rules commands in IotHub:
+    1. List IP filter rules: azure iothub ipfilter-rules list [resource-group] [name]
+    2. Set IP filter rules: azure iothub ipfilter-rules set [resource-group] [name] [input-file]
+* HDInsight #3268
+  * Added new securityProfile section to input payload when creating a cluster. This enables integration with Active Directory.
+* WebApp #3260
+  * Added slot support for all webapp commands
+  * Updated descriptions of some webapp commands
+  * Made some minor optimizations for appsettings and hostnames
+* ResourceManager #3277
+  * Modified the group deployment command to not throw when optional parameters are omitted
+* Usage #3276
+   * Ported azure-arm-commerce to use Autorest based library
+   * Provided support for `| more` while paging
+   * Fixed bugs #3239 and #3255.
+* ActiveDirectory #3276
+   * Fixed the implementation of `| more` while paging in `azure ad sp|user|group|group memeber list` commands
+
 ##2016-10-12 Version 0.10.6
 * General
   * Changed log output filename to be trivially sortable into chronological order #3215
