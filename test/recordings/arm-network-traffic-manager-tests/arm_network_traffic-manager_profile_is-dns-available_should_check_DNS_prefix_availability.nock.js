@@ -14,7 +14,8 @@ exports.getMockedProfile = function () {
     },
     tenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47',
     state: 'Enabled',
-    registeredProviders: ['mobileservice'],
+    registeredProviders: [],
+    _eventsCount: '1',
     isDefault: true
   }, newProfile.environments['AzureCloud']));
 
@@ -27,20 +28,41 @@ exports.setEnvironment = function() {
 
 exports.scopes = [[function (nock) { 
 var result = 
-nock('https://management.azure.com:443')
+nock('http://management.azure.com:443')
   .filteringRequestBody(function (path) { return '*';})
-.post('/providers/Microsoft.Network/checkTrafficManagerNameAvailability?api-version=2015-11-01', '*')
+.post('/providers/Microsoft.Network/checkTrafficManagerNameAvailability?api-version=2017-05-01', '*')
   .reply(200, "{\"name\":\"test-profile-dns\",\"type\":\"Microsoft.Network\\/trafficManagerProfiles\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"Domain name test-profile-dns.trafficmanager.net already exists. Please choose a different DNS prefix.\"}", { 'cache-control': 'private',
   'content-length': '239',
   'content-type': 'application/json; charset=utf-8',
   'x-content-type-options': 'nosniff',
   'strict-transport-security': 'max-age=31536000; includeSubDomains',
-  'x-ms-request-id': '72356d37-8d31-4342-8064-9e38a974c108',
+  'x-ms-request-id': '04aa2263-bdc3-4198-9192-0f06ffb94309',
   server: 'Microsoft-IIS/8.5',
   'x-aspnet-version': '4.0.30319',
   'x-powered-by': 'ASP.NET',
   'x-ms-ratelimit-remaining-tenant-writes': '1199',
-  'x-ms-correlation-request-id': '438beea8-2c9d-45e9-8b95-6b728df6782c',
-  'x-ms-routing-request-id': 'WESTEUROPE:20161207T143537Z:438beea8-2c9d-45e9-8b95-6b728df6782c',
-  date: 'Wed, 07 Dec 2016 14:35:37 GMT' });
+  'x-ms-correlation-request-id': 'bccd9845-c04b-4782-bd14-92d8e28f4301',
+  'x-ms-routing-request-id': 'WESTEUROPE:20170531T120101Z:bccd9845-c04b-4782-bd14-92d8e28f4301',
+  date: 'Wed, 31 May 2017 12:01:00 GMT',
+  connection: 'close' });
+ return result; },
+function (nock) { 
+var result = 
+nock('https://management.azure.com:443')
+  .filteringRequestBody(function (path) { return '*';})
+.post('/providers/Microsoft.Network/checkTrafficManagerNameAvailability?api-version=2017-05-01', '*')
+  .reply(200, "{\"name\":\"test-profile-dns\",\"type\":\"Microsoft.Network\\/trafficManagerProfiles\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"Domain name test-profile-dns.trafficmanager.net already exists. Please choose a different DNS prefix.\"}", { 'cache-control': 'private',
+  'content-length': '239',
+  'content-type': 'application/json; charset=utf-8',
+  'x-content-type-options': 'nosniff',
+  'strict-transport-security': 'max-age=31536000; includeSubDomains',
+  'x-ms-request-id': '04aa2263-bdc3-4198-9192-0f06ffb94309',
+  server: 'Microsoft-IIS/8.5',
+  'x-aspnet-version': '4.0.30319',
+  'x-powered-by': 'ASP.NET',
+  'x-ms-ratelimit-remaining-tenant-writes': '1199',
+  'x-ms-correlation-request-id': 'bccd9845-c04b-4782-bd14-92d8e28f4301',
+  'x-ms-routing-request-id': 'WESTEUROPE:20170531T120101Z:bccd9845-c04b-4782-bd14-92d8e28f4301',
+  date: 'Wed, 31 May 2017 12:01:00 GMT',
+  connection: 'close' });
  return result; }]];

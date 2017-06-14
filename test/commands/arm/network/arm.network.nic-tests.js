@@ -55,10 +55,12 @@ var nicProp = {
   ipConfigName: 'another-ip-config',
   enableIpForwarding: false,
   newEnableIpForwarding: true,
+  enableAcceleratedNetworking: true,
+  newEnableAcceleratedNetworking: false,
   tags: networkUtil.tags,
   newTags: networkUtil.newTags,
   attachedVMName: 'tempXplatVMForNicTests',
-  attachedVMStorageAccount: 'xplattemptestaccount'
+  attachedVMStorageAccount: 'xplateffectiveaccount'
 };
 var ipConfigProp1 = {
   name: 'config01'
@@ -72,7 +74,7 @@ var ipConfigProp2 = {
 };
 var publicIpProp = {
   name: 'test-ip',
-  domainName: 'foo-domain',
+  domainName: 'foo-domain-test',
   allocationMethod: 'Static',
   ipVersion: 'IPv4',
   idleTimeout: 4,
@@ -83,7 +85,7 @@ var lbProp = {
   fipName: 'test-fip',
   publicIpProp: {
     name: 'test-fip-ip',
-    domainName: 'baz-domain',
+    domainName: 'baz-domain-test',
     allocationMethod: 'Dynamic',
     ipVersion: 'IPv4',
     idleTimeout: 4,
@@ -158,7 +160,7 @@ describe('arm', function () {
             networkUtil.createSubnet(groupName, vnetName, subnetName, subnetAddressPrefix, suite, function (subnet) {
               subnetId = subnet.id;
               networkUtil.createPublicIp(publicIpProp, suite, function (publicIp) {
-                var cmd = 'network nic create -g {group} -n {name} -l {location} -a {privateIPAddress} -r {internalDnsNameLabel} -f {enableIpForwarding} -t {tags} -u {1} -i {2} --json'
+                var cmd = 'network nic create -g {group} -n {name} -l {location} -a {privateIPAddress} -r {internalDnsNameLabel} -f {enableIpForwarding} -j {enableAcceleratedNetworking} -t {tags} -u {1} -i {2} --json'
                   .formatArgs(nicProp, subnetId, publicIp.id);
                 publicIpId = publicIp.id;
                 testUtils.executeCommand(suite, retry, cmd, function (result) {
@@ -166,6 +168,7 @@ describe('arm', function () {
                   var nic = JSON.parse(result.text);
                   nic.name.should.equal(nicProp.name);
                   nic.enableIPForwarding.should.equal(nicProp.enableIpForwarding);
+                  nic.enableAcceleratedNetworking.should.equal(nicProp.enableAcceleratedNetworking);
                   var dnsSettings = nic.dnsSettings;
                   dnsSettings.internalDnsNameLabel.should.equal(nicProp.internalDnsNameLabel);
                   // dnsSettings.internalDomainNameSuffix.should.not.be.empty;
@@ -192,6 +195,7 @@ describe('arm', function () {
           var nic = JSON.parse(result.text);
           nic.name.should.equal(nicProp.name);
           nic.enableIPForwarding.should.equal(nicProp.enableIpForwarding);
+          nic.enableAcceleratedNetworking.should.equal(nicProp.enableAcceleratedNetworking);
           var dnsSettings = nic.dnsSettings;
           dnsSettings.internalDnsNameLabel.should.equal(nicProp.internalDnsNameLabel);
           // dnsSettings.internalDomainNameSuffix.should.not.be.empty;
@@ -208,13 +212,14 @@ describe('arm', function () {
         });
       });
       it('set should modify nic', function (done) {
-        var cmd = 'network nic set -g {group} -n {name} -r {newInternalDnsNameLabel} -f {newEnableIpForwarding} -t {newTags} --json'
+        var cmd = 'network nic set -g {group} -n {name} -r {newInternalDnsNameLabel} -f {newEnableIpForwarding} -j {newEnableAcceleratedNetworking} -t {newTags} --json'
           .formatArgs(nicProp);
 
         testUtils.executeCommand(suite, retry, cmd, function (result) {
           result.exitStatus.should.equal(0);
           var nic = JSON.parse(result.text);
           nic.enableIPForwarding.should.equal(nicProp.newEnableIpForwarding);
+          nic.enableAcceleratedNetworking.should.equal(nicProp.newEnableAcceleratedNetworking);
           var dnsSettings = nic.dnsSettings;
           dnsSettings.internalDnsNameLabel.should.equal(nicProp.newInternalDnsNameLabel);
           // dnsSettings.internalDomainNameSuffix.should.not.be.empty;
